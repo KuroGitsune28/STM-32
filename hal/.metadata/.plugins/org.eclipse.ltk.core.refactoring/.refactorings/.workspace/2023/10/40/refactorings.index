@@ -1,0 +1,7 @@
+1696669803097	Delete resource '001_Gpio'
+1696669892661	Delete resource '001_Gpio'
+1696670389417	Delete resource '001_Gpio/Drivers'
+1696672083852	Delete resource '001_Gpio/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/iar'
+1696672093223	Delete resource '001_Gpio/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/arm'
+1696672102767	Delete resource '001_Gpio/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc'
+1696672120876	Delete resource '001_Gpio/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c'

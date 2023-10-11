@@ -1,0 +1,14 @@
+/*
+ * 004spi_tx_testing.c
+ *
+ *  Created on: Oct 4, 2023
+ *      Author: ARYAN
+ */
+#include "stm3f407xx.h"
+
+
+int main(void)
+{
+
+	return 0;
+}

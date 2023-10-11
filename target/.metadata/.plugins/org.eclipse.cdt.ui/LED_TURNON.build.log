@@ -1,0 +1,10 @@
+19:46:11 **** Build of configuration Debug for project LED_TURNON ****
+make -j16 all 
+arm-none-eabi-size   LED_TURNON.elf 
+   text	   data	    bss	    dec	    hex	filename
+   5948	     20	   1572	   7540	   1d74	LED_TURNON.elf
+Finished building: default.size.stdout
+ 
+
+19:46:11 Build Finished. 0 errors, 0 warnings. (took 254ms)
+

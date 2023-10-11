@@ -1,0 +1,4 @@
+../Src/main2_toggle.c:44:5:main	8	static
+../Src/main2_toggle.c:68:6:PD12_LED_Init	32	static
+../Src/main2_toggle.c:81:6:PA0_BTN_Init	32	static
+../Src/main2_toggle.c:94:6:SysTick_Handler	8	static

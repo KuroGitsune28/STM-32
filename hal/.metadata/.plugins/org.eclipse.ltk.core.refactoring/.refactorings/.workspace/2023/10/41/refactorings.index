@@ -1,0 +1,8 @@
+1696781817235	Delete resource '002_UART_Tx_Printf/002_UART_Tx_Polling.launch'
+1696781826059	Delete resource '002_UART_Tx_Printf/001_Gpio.launch'
+1696781828095	Delete resource '002_UART_Tx_Printf/002_UART_Tx_Polling Debug.launch'
+1696781831072	Delete resource '002_UART_Tx_Printf/STM32F407VGTX_FLASH.ld'
+1696781834383	Delete resource '002_UART_Tx_Printf/STM32F407VGTX_RAM.ld'
+1696781835952	Delete resource '002_UART_Tx_Printf/002_UART_Tx_Printf.launch'
+1696942717307	Delete resource 'UART'
+1696943445833	Delete resource 'Uart2_test'

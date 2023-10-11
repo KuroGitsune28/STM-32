@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Driver_devlopment/Src/005spi_tx_aurdino&apos; to &apos;005spi_tx_aurdino.c&apos;" description="Rename resource &apos;005spi_tx_aurdino&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Src/005spi_tx_aurdino" name="005spi_tx_aurdino.c" stamp="1696586967963" updateReferences="true"/>
+</session>

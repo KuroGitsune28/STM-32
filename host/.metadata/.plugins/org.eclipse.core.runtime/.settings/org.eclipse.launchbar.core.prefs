@@ -1,0 +1,10 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:000Test.exe,org.eclipse.launchbar.core.descriptorType.default\:Math.exe,org.eclipse.launchbar.core.descriptorType.default\:testVariable.exe
+eclipse.preferences.version=1
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:peritest\ Debug/activeLaunchTarget=null\:---
+org.eclipse.launchbar.core.descriptorType.default\:000Test.exe/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:000Test.exe/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:testVariable.exe/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:testVariable.exe/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
