@@ -37,25 +37,25 @@
 UART_HandleTypeDef		Uart1;
 char Datatosend[20]="Hello World\r\n";
 
-void UART2_Init(void);
+void UART1_Init(void);
 void PD12_LED_Init(void);
 
-//int __io_putchar(int ch)
-//{
-//	HAL_UART_Transmit(&Uart1,(uint8_t*)&ch,1,100);
-//	return ch;
-//}
+int __io_putchar(int ch)
+{
+	HAL_UART_Transmit(&Uart1,(uint8_t*)&ch,1,100);
+	return ch;
+}
 
 int main(void)
 {
 	HAL_Init();
-	UART2_Init();
+	UART1_Init();
 	PD12_LED_Init();
 	while(1)
 	{
-//		printf("Hello World\r\n");
+		printf("Hello World\r\n");
 		HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_12);
-		HAL_Delay(10);
+		HAL_Delay(1000);
 	}
 
 //    /* Loop forever */
@@ -67,13 +67,13 @@ void SysTick_Handler(void)
 	HAL_IncTick();
 }
 
-void UART2_Init(void)
+void UART1_Init(void)
 {
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
 	// Configure Clock for UART
 	//GPIO init typedef
-//	GPIO_InitTypeDef	GpioStruct;
+	GPIO_InitTypeDef	GpioStruct;
 	__HAL_RCC_USART1_CLK_ENABLE();
 
 //	UART_HandleTypeDef		Uart2; // Declared Globally for usage by all
@@ -81,18 +81,18 @@ void UART2_Init(void)
 	/**********************/
 	// USART MSP Init For GPIO Configuration then manual.
 
-	HAL_UART_MspInit(&Uart1);
+//	HAL_UART_MspInit(&Uart1);
 	/**********************/
 
 	// GPIO Configuration
 
-//	GpioStruct.Pin			=	GPIO_PIN_9 | GPIO_PIN_10;
-//	GpioStruct.Mode 		=	GPIO_MODE_AF_PP;
-//	GpioStruct.Alternate	=	GPIO_AF7_USART1;
-//	GpioStruct.Pull			= 	GPIO_NOPULL;
-//	GpioStruct.Speed		= 	GPIO_SPEED_FREQ_VERY_HIGH;
-//
-//	HAL_GPIO_Init(GPIOA,&GpioStruct);
+	GpioStruct.Pin			=	GPIO_PIN_9 | GPIO_PIN_10;
+	GpioStruct.Mode 		=	GPIO_MODE_AF_PP;
+	GpioStruct.Alternate	=	GPIO_AF7_USART1;
+	GpioStruct.Pull			= 	GPIO_NOPULL;
+	GpioStruct.Speed		= 	GPIO_SPEED_FREQ_VERY_HIGH;
+
+	HAL_GPIO_Init(GPIOA,&GpioStruct);
 
 	// USART2 Configuration
 

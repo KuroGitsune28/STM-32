@@ -1,0 +1,10 @@
+14:03:33 **** Build of configuration Debug for project 004_ADC_SingleConv_Test ****
+make -j16 all 
+arm-none-eabi-size   004_ADC_SingleConv_Test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11668	    112	   2048	  13828	   3604	004_ADC_SingleConv_Test.elf
+Finished building: default.size.stdout
+ 
+
+14:03:34 Build Finished. 0 errors, 0 warnings. (took 204ms)
+

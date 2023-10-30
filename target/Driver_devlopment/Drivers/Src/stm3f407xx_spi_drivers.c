@@ -188,7 +188,7 @@ void SPI_DeInit(SPI_RegDef_t* pSPIx)
  *
  * @fn 			- SPI_SendData
  *
- * @brief		- it will de-initialize spi
+ * @brief		- it will send data through spi
  *
  * @param[in] 	- SPI1/SPI2/SPI3/SPI4
  * @param[in] 	- txBuffer data
@@ -230,7 +230,51 @@ void SPI_SendData(SPI_RegDef_t* pSPIx, uint8_t *pTxBuffer, uint32_t Len)
 
 /*********************************************************
  *
- * @fn 			- SPI_SendData
+ * @fn 			- SPI_ReceiveData
+ *
+ * @brief		- it will receive data from spi
+ *
+ * @param[in] 	- SPI1/SPI2/SPI3/SPI4
+ * @param[in] 	- txBuffer data
+ * @param[in] 	- Lenght of data
+ *
+ * @return 		- none
+ *
+ * @Note		- This is called blocking or Polling as while loop can run forever
+ *
+ * */
+void SPI_ReceiveData(SPI_RegDef_t* pSPIx, uint8_t *pRxBuffer, uint32_t Len)
+{
+	while(Len > 0)
+	{
+		// 1. Check if RXBUFFER is empty
+		while(! SPI_GetFlagStatus(pSPIx,SPI_RXNE_FLAG));
+
+		// 2. Check if DFF is 0 or 1
+		if(pSPIx->CR1 & (1 << SPI_CR1_DFF))
+		{
+			// 16 bits DFF
+			*((uint16_t*)pRxBuffer) = pSPIx->DR;
+			Len--;
+			Len--;
+			(uint16_t*)pRxBuffer++;
+		}
+		else
+		{
+			//8-bit DFF
+			*pRxBuffer = pSPIx->DR;
+			Len--;
+			pRxBuffer++;
+		}
+	}
+
+}
+
+
+
+/*********************************************************
+ *
+ * @fn 			- SPI_PeripheralControl
  *
  * @brief		- It enables SPI peripheral in CR1
  *

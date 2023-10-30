@@ -68,7 +68,7 @@ void loop()
   uint32_t i;
   uint16_t dataLen = 0;
   Serial.println("Slave waiting for ss to go low");
-  while(digitalRead(SS));
+  // while(digitalRead(SS));
 
   i = 0;
   dataLen = SPI_SlaveReceive();

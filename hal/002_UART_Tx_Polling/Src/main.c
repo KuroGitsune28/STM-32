@@ -19,13 +19,13 @@
 #include <stdint.h>
 #include "stm32f4xx_hal.h"
 #include <string.h>
-
+#include <stdio.h>
 /*
  * BOARD INFO :-
  *
- *	USART 2
- *	USART_TX	-	PA2		AF7
- *	USART_RX	- 	PA3		AF7
+ *	USART 1
+ *	USART_TX	-	PA9			AF7
+ *	USART_RX	- 	PA10		AF7
  *
  * */
 
@@ -34,25 +34,24 @@
 #endif
 /* GLOBAL VARIABLES */
 //UART	HandleTypeDef
-UART_HandleTypeDef		Uart2;
+UART_HandleTypeDef		Uart1;
 char Datatosend[20]="Hello World\r\n";
 
-void UART2_Init(void);
+void UART1_Init(void);
 
 
 int main(void)
 {
 	HAL_Init();
-	UART2_Init();
-
+	UART1_Init();
 	while(1)
 	{
-		HAL_UART_Transmit(&Uart2,(uint8_t*)&Datatosend,20,100);
+		HAL_UART_Transmit(&Uart1, (const uint8_t *)&Datatosend,20, 100);
 		HAL_Delay(1000);
 	}
 
-    /* Loop forever */
-	for(;;);
+//    /* Loop forever */
+//	for(;;);
 }
 
 void SysTick_Handler(void)
@@ -60,48 +59,40 @@ void SysTick_Handler(void)
 	HAL_IncTick();
 }
 
-void UART2_Init(void)
+void UART1_Init(void)
 {
+	// Configure Clock for UART
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 
-	// Configure Clock for UART
-//	GPIO init typedef
+	//GPIO init typedef
 	GPIO_InitTypeDef	GpioStruct;
-	__HAL_RCC_USART2_CLK_ENABLE();
 
-//	UART_HandleTypeDef		Uart2; // Declared Globally for usage by all
-
-	/**********************/
-	// USART MSP Init For GPIO Configuration then manual.
-
-//	HAL_UART_MspInit(&Uart2);
-	/**********************/
-
+	__HAL_RCC_USART1_CLK_ENABLE();
 	// GPIO Configuration
 
-	GpioStruct.Pin			=	GPIO_PIN_2 | GPIO_PIN_3;
+	GpioStruct.Pin			=	GPIO_PIN_9 | GPIO_PIN_10;
 	GpioStruct.Mode 		=	GPIO_MODE_AF_PP;
-	GpioStruct.Alternate	=	GPIO_AF7_USART2;
+	GpioStruct.Alternate	=	GPIO_AF7_USART1;
 	GpioStruct.Pull			= 	GPIO_NOPULL;
 	GpioStruct.Speed		= 	GPIO_SPEED_FREQ_VERY_HIGH;
-//
+
 	HAL_GPIO_Init(GPIOA,&GpioStruct);
 
-	// USART2 Configuration
-
-
-	Uart2.Instance				=	USART2; // USART2 Base Address is given
+	// USART1 Configuration
+	Uart1.Instance				=	USART1; // USART1 Base Address is given
 	// Don't get confused between UART and USART there is just a bit difference
 	// We are configuring USART2 as UART
+	Uart1.Init.BaudRate			=	115200;
+	Uart1.Init.WordLength		=	UART_WORDLENGTH_8B;
+	Uart1.Init.StopBits			=	UART_STOPBITS_1;
+	Uart1.Init.Mode				=	UART_MODE_TX;
+	Uart1.Init.Parity			=	UART_PARITY_NONE;
+	Uart1.Init.HwFlowCtl		=	UART_HWCONTROL_NONE;
+	Uart1.Init.OverSampling		=	UART_OVERSAMPLING_16;
 
-	Uart2.Init.BaudRate			=	115200;
-	Uart2.Init.WordLength		=	UART_WORDLENGTH_8B;
-	Uart2.Init.StopBits			=	UART_STOPBITS_1;
-	Uart2.Init.Mode				=	UART_MODE_TX;
-	Uart2.Init.Parity			=	UART_PARITY_NONE;
-	Uart2.Init.HwFlowCtl		=	UART_HWCONTROL_NONE;
-	Uart2.Init.OverSampling		=	UART_OVERSAMPLING_16;
-
-	HAL_UART_Init(&Uart2);
+	HAL_UART_Init(&Uart1);
 
 }
+
+
+

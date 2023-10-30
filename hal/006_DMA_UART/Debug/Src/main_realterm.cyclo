@@ -1,0 +1,5 @@
+../Src/main_realterm.c:47:5:main	1
+../Src/main_realterm.c:60:6:SysTick_Handler	1
+../Src/main_realterm.c:66:6:UART1_DMA_Init	1
+../Src/main_realterm.c:124:6:DMA2_Stream7_IRQHandler	1
+../Src/main_realterm.c:130:6:UART1_IRQHandler	1

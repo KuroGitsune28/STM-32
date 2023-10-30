@@ -23,6 +23,7 @@ void SPI2_GPIOInint(void)
 
 	SPI_Pins.GPIO_PinConfig.GPIO_PinAFMode = GPIO_MODE_ATLFN;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinAFMode = 5;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
 
@@ -44,6 +45,7 @@ void SPI2_GPIOInint(void)
 
 }
 
+
 void SPI2_Inint(void)
 {
 	SPI_Handle_t SPI_Handle;
@@ -62,24 +64,29 @@ void SPI2_Inint(void)
 	SPI_Init(&SPI_Handle);
 }
 
+void delay(void){
+	for(uint32_t i =0;i<1000000;i++);
+}
+
 
 int main(void)
 {
 	char Userdata[] = "Hello World";
 	SPI2_GPIOInint();
 	SPI2_Inint();
-
+	Led_Init();
 	// This will enable SSI and make NSS High internally and avoid MODF Error
 	SPI_SSIConfig(SPI2,ENABLE);
 
-	// Enable SPI in CR1 register
+	// Enable SPI in CR1 register (SPE is set)
 	SPI_PeripheralControl(SPI2,ENABLE);
 
 	// So check if SPI is busy or not using STATUS REGISTER
-	while(SPI_GetFlagStatus());
+	while(SPI_GetFlagStatus(SPI2,SPI_BUSY_FLAG));
 
 	// AFTER check disable SPI
 	SPI_SendData(SPI2,(uint8_t*)Userdata,strlen(Userdata));
+
 
 	SPI_PeripheralControl(SPI2,DISABLE);
 

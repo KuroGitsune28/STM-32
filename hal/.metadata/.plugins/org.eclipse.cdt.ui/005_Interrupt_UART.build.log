@@ -1,0 +1,10 @@
+14:34:08 **** Incremental Build of configuration Debug for project 005_Interrupt_UART ****
+make -j16 all 
+arm-none-eabi-size   005_Interrupt_UART.elf 
+   text	   data	    bss	    dec	    hex	filename
+   5184	     20	   1652	   6856	   1ac8	005_Interrupt_UART.elf
+Finished building: default.size.stdout
+ 
+
+14:34:08 Build Finished. 0 errors, 0 warnings. (took 197ms)
+

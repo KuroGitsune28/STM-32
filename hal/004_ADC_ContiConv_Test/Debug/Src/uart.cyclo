@@ -1,0 +1,2 @@
+../Src/uart.c:17:5:__io_putchar	1
+../Src/uart.c:24:6:UART1_Init	1

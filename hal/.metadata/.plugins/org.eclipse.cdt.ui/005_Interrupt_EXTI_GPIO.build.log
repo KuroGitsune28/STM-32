@@ -1,0 +1,10 @@
+14:03:36 **** Incremental Build of configuration Debug for project 005_Interrupt_EXTI_GPIO ****
+make -j16 all 
+arm-none-eabi-size   005_Interrupt_EXTI_GPIO.elf 
+   text	   data	    bss	    dec	    hex	filename
+   9924	    112	   1976	  12012	   2eec	005_Interrupt_EXTI_GPIO.elf
+Finished building: default.size.stdout
+ 
+
+14:03:36 Build Finished. 0 errors, 0 warnings. (took 204ms)
+

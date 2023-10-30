@@ -1,0 +1,202 @@
+/*
+ * 006spi_cmd_handling.c
+ *
+ *  Created on: Oct 21, 2023
+ *      Author: ARYAN
+ */
+
+
+#include <string.h>
+#include "stm3f407xx.h"
+
+/* MACROS FOR AURDINO */
+
+#define CMD_LED_CTRL	0x50
+#define CMD_SENSOR_READ	0x51
+#define CMD_LED_READ	0x52
+#define CMD_PRINT		0x53
+#define CMD_ID_READ		0x54
+
+#define LED_ON			1
+#define LED_OFF			0
+
+#define AN_PIN_0		0
+#define AN_PIN_1		1
+#define AN_PIN_2		2
+#define AN_PIN_3		3
+#define AN_PIN_4		4
+
+#define LED_PIN         9
+
+
+void delay(void){
+	for(uint32_t i =0;i<500000/2;i++);
+}
+
+/*
+ * PB 12 --> NSS
+ * PB 13 --> SCLK
+ * PB 14 --> MISO
+ * PB 15 --> MOSI
+ *
+ * */
+
+void SPI2_GPIOInint(void)
+{
+	GPIO_Handle_t SPI_Pins;
+
+	SPI_Pins.pGPIOx = GPIOB;
+
+	SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ATLFN;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinAFMode = 5;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
+
+	// SCLK
+	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
+	GPIO_Init(&SPI_Pins);
+
+
+
+	// MISO
+	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
+	GPIO_Init(&SPI_Pins);
+
+	// MOSI
+	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
+	GPIO_Init(&SPI_Pins);
+
+	//NSS
+//	SPI_Pins.pGPIOx = GPIOB;
+//	SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+//	SPI_Pins.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+//	SPI_Pins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+//	SPI_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	GPIO_Init(&SPI_Pins);
+}
+
+void SPI2_Inint(void)
+{
+	SPI_Handle_t SPI_Handle;
+
+	SPI_Handle.pSPIx = SPI2;
+
+	SPI_Handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
+	SPI_Handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
+	SPI_Handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8; // to provide 2MHz clock
+	SPI_Handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // Software slave management mode as we dont actually need NSS
+	SPI_Handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
+	SPI_Handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
+	SPI_Handle.SPIConfig.SPI_CPOL = SPI_CPOL_LOW;
+
+
+	SPI_Init(&SPI_Handle);
+}
+
+/* FOR BUTTON */
+void GPIO_Buttoninit()
+{
+	GPIO_Handle_t Gpiobut;
+
+	Gpiobut.pGPIOx = GPIOA;
+	Gpiobut.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_0;
+	Gpiobut.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
+	Gpiobut.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
+//	Gpiobut.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+	Gpiobut.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+
+//	GPIO_PeriClockControl(GPIOA,ENABLE); NO NEED AS WE ARE ENABLING IN INIT FUNCTION
+
+	GPIO_Init(&Gpiobut);
+}
+
+void GPIO_Led()
+{
+	GPIO_Handle_t Gpioled;
+
+	Gpioled.pGPIOx = GPIOD;
+	Gpioled.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	Gpioled.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	Gpioled.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
+	Gpioled.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+	Gpioled.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+
+//	GPIO_PeriClockControl(GPIOD,ENABLE);
+
+	GPIO_Init(&Gpioled);
+}
+
+uint8_t Verify_Ack(ackbyte)
+{
+	if(ackbyte == 0xF5){
+		return 1;
+	}
+	return 0;
+}
+
+
+int main(void)
+{
+	uint8_t dummy_write = 0xff;
+	uint8_t dummy_read;
+	// Enable GPIOB
+	SPI2_GPIOInint();
+
+	// Enable SPI2
+	SPI2_Inint();
+
+	GPIO_Buttoninit();
+
+	// This will enable SSI and make NSS High internally and avoid MODF Error
+//	SPI_SSIConfig(SPI2,ENABLE);
+
+	SPI_SSOEConfig(SPI2,ENABLE);
+
+	while(1){
+
+		// Press button to go ahead
+		while(!GPIO_ReadFromInputPin(GPIOA,GPIO_PIN_NO_0));
+
+		// To avoid button de-bouncing
+		delay();
+
+
+		// Enable SPI in CR1 register
+		SPI_PeripheralControl(SPI2,ENABLE);
+
+		uint8_t commandbyte = CMD_LED_CTRL;
+		uint8_t ackbyte;
+		uint8_t args[2];
+
+		// Send command to slave
+		SPI_SendData(SPI2,&commandbyte,1);
+
+		// it will recieve some bytes(GArbage) after sending data that need to be stored
+		SPI_ReceiveData(SPI2,&dummy_read,1);
+
+		// SPI do not initiate data transfer so we need to send dummy for data transfer to begin
+		SPI_SendData(SPI2,&dummy_write,1);
+
+		SPI_ReceiveData(SPI2,&ackbyte,1);
+
+		if( Verify_Ack(ackbyte))
+		{
+			// send arguments
+			args[0] = LED_PIN;
+			args[1] = LED_ON;
+			SPI_SendData(SPI2,args,2);
+		}
+
+		// Cannot disable abruptly
+		// So check if SPI is busy or not using STATUS REGISTER
+		while(SPI_GetFlagStatus(SPI2,SPI_BUSY_FLAG));
+
+		SPI_PeripheralControl(SPI2,DISABLE);
+
+	}
+
+	return 0;
+}
+

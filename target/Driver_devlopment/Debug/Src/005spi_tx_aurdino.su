@@ -1,6 +1,6 @@
 ../Src/005spi_tx_aurdino.c:10:6:delay	16	static
 ../Src/005spi_tx_aurdino.c:22:6:SPI2_GPIOInint	24	static
-../Src/005spi_tx_aurdino.c:51:6:SPI2_Inint	24	static
-../Src/005spi_tx_aurdino.c:70:6:GPIO_Buttoninit	24	static
-../Src/005spi_tx_aurdino.c:86:6:GPIO_Led	24	static
-../Src/005spi_tx_aurdino.c:102:5:main	24	static
+../Src/005spi_tx_aurdino.c:58:6:SPI2_Inint	24	static
+../Src/005spi_tx_aurdino.c:77:6:GPIO_Buttoninit	24	static
+../Src/005spi_tx_aurdino.c:93:6:GPIO_Led	24	static
+../Src/005spi_tx_aurdino.c:109:5:main	24	static

@@ -1,0 +1,10 @@
+22:10:47 **** Incremental Build of configuration Debug for project 006_DMA_MemtoMem ****
+make -j16 all 
+arm-none-eabi-size   006_DMA_MemtoMem.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11864	    112	   2200	  14176	   3760	006_DMA_MemtoMem.elf
+Finished building: default.size.stdout
+ 
+
+22:10:47 Build Finished. 0 errors, 0 warnings. (took 205ms)
+

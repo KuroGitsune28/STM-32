@@ -2120,6 +2120,11 @@ Discarded input sections
  .group         0x0000000000000000        0xc ./Src/main.o
  .group         0x0000000000000000        0xc ./Src/main.o
  .group         0x0000000000000000        0xc ./Src/main.o
+ .group         0x0000000000000000        0xc ./Src/main.o
+ .group         0x0000000000000000        0xc ./Src/main.o
+ .group         0x0000000000000000        0xc ./Src/main.o
+ .group         0x0000000000000000        0xc ./Src/main.o
+ .group         0x0000000000000000        0xc ./Src/main.o
  .text          0x0000000000000000        0x0 ./Src/main.o
  .data          0x0000000000000000        0x0 ./Src/main.o
  .bss           0x0000000000000000        0x0 ./Src/main.o
@@ -2763,9 +2768,9 @@ LOAD D:/STM32IDE/STM32CubeIDE_1.13.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.m
  .text.SysTick_Handler
                 0x0000000008001344        0xc ./Src/main.o
                 0x0000000008001344                SysTick_Handler
- .text.UART2_Init
+ .text.UART1_Init
                 0x0000000008001350       0xb0 ./Src/main.o
-                0x0000000008001350                UART2_Init
+                0x0000000008001350                UART1_Init
  .text.Reset_Handler
                 0x0000000008001400       0x50 ./Startup/startup_stm32f407vgtx.o
                 0x0000000008001400                Reset_Handler
@@ -2988,8 +2993,8 @@ LOAD D:/STM32IDE/STM32CubeIDE_1.13.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.m
  *(.bss*)
  .bss.uwTick    0x000000002000003c        0x4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
                 0x000000002000003c                uwTick
- .bss.Uart2     0x0000000020000040       0x44 ./Src/main.o
-                0x0000000020000040                Uart2
+ .bss.Uart1     0x0000000020000040       0x44 ./Src/main.o
+                0x0000000020000040                Uart1
  *(COMMON)
                 0x0000000020000084                . = ALIGN (0x4)
                 0x0000000020000084                _ebss = .
@@ -3117,42 +3122,47 @@ LOAD D:/STM32IDE/STM32CubeIDE_1.13.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.m
  .debug_rnglists
                 0x00000000000003f9       0x19 ./Startup/startup_stm32f407vgtx.o
 
-.debug_macro    0x0000000000000000     0x1434
+.debug_macro    0x0000000000000000     0x160d
  .debug_macro   0x0000000000000000      0x224 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
  .debug_macro   0x0000000000000224      0x1c4 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .debug_macro   0x00000000000003e8      0x1ca ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .debug_macro   0x00000000000005b2      0x1e8 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
  .debug_macro   0x000000000000079a      0x1c5 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- .debug_macro   0x000000000000095f      0x292 ./Src/main.o
- .debug_macro   0x0000000000000bf1       0x61 ./Src/main.o
- .debug_macro   0x0000000000000c52       0x24 ./Src/main.o
- .debug_macro   0x0000000000000c76       0x43 ./Src/main.o
- .debug_macro   0x0000000000000cb9       0x34 ./Src/main.o
- .debug_macro   0x0000000000000ced       0x16 ./Src/main.o
- .debug_macro   0x0000000000000d03       0x43 ./Src/main.o
- .debug_macro   0x0000000000000d46       0x34 ./Src/main.o
- .debug_macro   0x0000000000000d7a       0x10 ./Src/main.o
- .debug_macro   0x0000000000000d8a       0x58 ./Src/main.o
- .debug_macro   0x0000000000000de2       0x8e ./Src/main.o
- .debug_macro   0x0000000000000e70       0x1c ./Src/main.o
- .debug_macro   0x0000000000000e8c      0x177 ./Src/main.o
- .debug_macro   0x0000000000001003      0x369 ./Src/main.o
- .debug_macro   0x000000000000136c       0x10 ./Src/main.o
- .debug_macro   0x000000000000137c       0x35 ./Src/main.o
- .debug_macro   0x00000000000013b1       0x20 ./Src/main.o
- .debug_macro   0x00000000000013d1       0x63 ./Src/system_stm32f4xx.o
+ .debug_macro   0x000000000000095f      0x2c6 ./Src/main.o
+ .debug_macro   0x0000000000000c25       0x61 ./Src/main.o
+ .debug_macro   0x0000000000000c86       0x24 ./Src/main.o
+ .debug_macro   0x0000000000000caa       0x43 ./Src/main.o
+ .debug_macro   0x0000000000000ced       0x34 ./Src/main.o
+ .debug_macro   0x0000000000000d21       0x16 ./Src/main.o
+ .debug_macro   0x0000000000000d37       0x43 ./Src/main.o
+ .debug_macro   0x0000000000000d7a       0x34 ./Src/main.o
+ .debug_macro   0x0000000000000dae       0x10 ./Src/main.o
+ .debug_macro   0x0000000000000dbe       0x58 ./Src/main.o
+ .debug_macro   0x0000000000000e16       0x8e ./Src/main.o
+ .debug_macro   0x0000000000000ea4       0x1c ./Src/main.o
+ .debug_macro   0x0000000000000ec0      0x177 ./Src/main.o
+ .debug_macro   0x0000000000001037      0x369 ./Src/main.o
+ .debug_macro   0x00000000000013a0       0x10 ./Src/main.o
+ .debug_macro   0x00000000000013b0       0x35 ./Src/main.o
+ .debug_macro   0x00000000000013e5       0x20 ./Src/main.o
+ .debug_macro   0x0000000000001405       0x1c ./Src/main.o
+ .debug_macro   0x0000000000001421       0x10 ./Src/main.o
+ .debug_macro   0x0000000000001431       0x1c ./Src/main.o
+ .debug_macro   0x000000000000144d       0x16 ./Src/main.o
+ .debug_macro   0x0000000000001463      0x147 ./Src/main.o
+ .debug_macro   0x00000000000015aa       0x63 ./Src/system_stm32f4xx.o
 
-.debug_line     0x0000000000000000     0x6d0b
+.debug_line     0x0000000000000000     0x6d2b
  .debug_line    0x0000000000000000      0xae9 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
  .debug_line    0x0000000000000ae9      0xd98 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
  .debug_line    0x0000000000001881      0xc5d ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
  .debug_line    0x00000000000024de      0xe60 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
  .debug_line    0x000000000000333e     0x2b8b ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
- .debug_line    0x0000000000005ec9      0x9b6 ./Src/main.o
- .debug_line    0x000000000000687f      0x411 ./Src/system_stm32f4xx.o
- .debug_line    0x0000000000006c90       0x7b ./Startup/startup_stm32f407vgtx.o
+ .debug_line    0x0000000000005ec9      0x9d6 ./Src/main.o
+ .debug_line    0x000000000000689f      0x411 ./Src/system_stm32f4xx.o
+ .debug_line    0x0000000000006cb0       0x7b ./Startup/startup_stm32f407vgtx.o
 
-.debug_str      0x0000000000000000    0xc2d8a
+.debug_str      0x0000000000000000    0xc33df
  .debug_str     0x0000000000000000    0xbe816 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
                                       0xbeb8d (size before relaxing)
  .debug_str     0x00000000000be816      0x3b2 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
@@ -3163,11 +3173,11 @@ LOAD D:/STM32IDE/STM32CubeIDE_1.13.1/STM32CubeIDE/plugins/com.st.stm32cube.ide.m
                                       0xbe43d (size before relaxing)
  .debug_str     0x00000000000bf158      0xa65 ./Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
                                       0xbe9dc (size before relaxing)
- .debug_str     0x00000000000bfbbd     0x3184 ./Src/main.o
-                                      0xc15d2 (size before relaxing)
- .debug_str     0x00000000000c2d41       0x1a ./Src/system_stm32f4xx.o
+ .debug_str     0x00000000000bfbbd     0x37d9 ./Src/main.o
+                                      0xc1c27 (size before relaxing)
+ .debug_str     0x00000000000c3396       0x1a ./Src/system_stm32f4xx.o
                                        0x3cea (size before relaxing)
- .debug_str     0x00000000000c2d5b       0x2f ./Startup/startup_stm32f407vgtx.o
+ .debug_str     0x00000000000c33b0       0x2f ./Startup/startup_stm32f407vgtx.o
                                          0x68 (size before relaxing)
 
 .debug_frame    0x0000000000000000     0x1570

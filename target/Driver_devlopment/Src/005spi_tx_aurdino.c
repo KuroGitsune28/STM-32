@@ -25,18 +25,17 @@ void SPI2_GPIOInint(void)
 
 	SPI_Pins.pGPIOx = GPIOB;
 
-	SPI_Pins.GPIO_PinConfig.GPIO_PinAFMode = GPIO_MODE_ATLFN;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_ATLFN;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinAFMode = 5;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	SPI_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HI;
 
-	//NSS
-	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
-	GPIO_Init(&SPI_Pins);
-
 	// SCLK
 	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_13;
 	GPIO_Init(&SPI_Pins);
+
+
 
 	// MISO
 	//SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_14;
@@ -46,6 +45,14 @@ void SPI2_GPIOInint(void)
 	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_15;
 	GPIO_Init(&SPI_Pins);
 
+	//NSS
+	SPI_Pins.pGPIOx = GPIOB;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_OUT;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinOType = GPIO_OP_TYPE_PP;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_MED;
+	SPI_Pins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NO_12;
+	GPIO_Init(&SPI_Pins);
 }
 
 void SPI2_Inint(void)
@@ -56,7 +63,7 @@ void SPI2_Inint(void)
 
 	SPI_Handle.SPIConfig.SPI_BusConfig = SPI_BUS_CONFIG_FD;
 	SPI_Handle.SPIConfig.SPI_DeviceMode = SPI_DEVICE_MODE_MASTER;
-	SPI_Handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV8; // to provide 2MHz clock
+	SPI_Handle.SPIConfig.SPI_SclkSpeed = SPI_SCLK_SPEED_DIV32; // to provide 2MHz clock
 	SPI_Handle.SPIConfig.SPI_SSM = SPI_SSM_DI; // Software slave management mode as we dont actually need NSS
 	SPI_Handle.SPIConfig.SPI_DFF = SPI_DFF_8BITS;
 	SPI_Handle.SPIConfig.SPI_CPHA = SPI_CPHA_LOW;
@@ -102,10 +109,19 @@ void GPIO_Led()
 int main(void)
 {
 	char Userdata[] = "Hello World";
+
+	// Enable GPIOB
 	SPI2_GPIOInint();
+
+	GPIO_WriteToOutputPin(GPIOB, GPIO_PIN_NO_12, SET);
+	// Enable SPI2
 	SPI2_Inint();
+
 	GPIO_Buttoninit();
+
 	GPIO_Led();
+	GPIO_WriteToOutputPin(GPIOD, GPIO_PIN_NO_12, SET);
+
 	// This will enable SSI and make NSS High internally and avoid MODF Error
 //	SPI_SSIConfig(SPI2,ENABLE);
 
@@ -128,6 +144,10 @@ int main(void)
 
 		// Slave need to know LENGTH INFO (1BYTE)
 		uint8_t datalen = strlen(Userdata);
+
+		GPIO_WriteToOutputPin(GPIOB, GPIO_PIN_NO_12, RESET);
+		GPIO_WriteToOutputPin(GPIOD, GPIO_PIN_NO_12, RESET);
+
 		SPI_SendData(SPI2,&datalen,1);
 
 		SPI_SendData(SPI2,(uint8_t*)Userdata,strlen(Userdata));
@@ -137,6 +157,9 @@ int main(void)
 		while(SPI_GetFlagStatus(SPI2,SPI_BUSY_FLAG));
 
 		SPI_PeripheralControl(SPI2,DISABLE);
+
+		GPIO_WriteToOutputPin(GPIOB, GPIO_PIN_NO_12, SET);
+		GPIO_WriteToOutputPin(GPIOD, GPIO_PIN_NO_12, SET);
 
 	}
 

@@ -201,7 +201,7 @@ void GPIO_Init(GPIO_Handle_t *pGPIOHandle)
 
 	if(pGPIOHandle->GPIO_PinConfig.GPIO_PinMode == GPIO_MODE_ATLFN)
 	{
-		uint8_t temp1=0,temp2=0;
+		uint8_t temp1,temp2;
 		temp1 = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber)/8 ;
 		temp2 = (pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber)%8 ;
 		pGPIOHandle->pGPIOx->AFR[temp1] &= ~(0xF << (4 * temp2) );

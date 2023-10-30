@@ -1,0 +1,7 @@
+../Src/adc.c:14:10:ADC_PA0_Read	8	static
+../Src/adc.c:21:6:ADC_PA0_SingleConv_Init	56	static
+../Src/adc.c:63:6:ADC_PA0_Interrupt_Init	56	static
+../Src/adc.c:110:6:ADC_PA0_DMA_Init	56	static
+../Src/adc.c:176:6:ADC_PA0_PA1_DMA_Init	56	static
+../Src/adc.c:251:6:DMA2_Stream0_IRQHandler	8	static
+../Src/adc.c:257:6:ADC_IRQHandler	8	static

@@ -1,0 +1,4 @@
+../Src/adc.c:13:10:ADC_PA0_Read	1
+../Src/adc.c:25:6:ADC_PA0_SingleConv_Init	1
+../Src/adc.c:67:6:ADC_PA0_Interrupt_Init	1
+../Src/adc.c:115:6:ADC_IRQHandler	1

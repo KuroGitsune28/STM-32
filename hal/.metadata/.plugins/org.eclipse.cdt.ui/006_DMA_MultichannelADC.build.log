@@ -1,0 +1,10 @@
+19:07:42 **** Incremental Build of configuration Debug for project 006_DMA_MultichannelADC ****
+make -j16 all 
+arm-none-eabi-size   006_DMA_MultichannelADC.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14448	    112	   2152	  16712	   4148	006_DMA_MultichannelADC.elf
+Finished building: default.size.stdout
+ 
+
+19:07:42 Build Finished. 0 errors, 0 warnings. (took 270ms)
+

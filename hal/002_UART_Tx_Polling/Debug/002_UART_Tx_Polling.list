@@ -39,15 +39,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  17 .debug_rnglists 00000412  00000000  00000000  00027540  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_macro  00001434  00000000  00000000  00027952  2**0
+ 18 .debug_macro  0000160d  00000000  00000000  00027952  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_line   00006d0b  00000000  00000000  00028d86  2**0
+ 19 .debug_line   00006d2b  00000000  00000000  00028f5f  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_str    000c2d8a  00000000  00000000  0002fa91  2**0
+ 20 .debug_str    000c33df  00000000  00000000  0002fc8a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_frame  00001570  00000000  00000000  000f281c  2**2
+ 21 .debug_frame  00001570  00000000  00000000  000f306c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 0000005c  00000000  00000000  000f3d8c  2**0
+ 22 .debug_line_str 0000005c  00000000  00000000  000f45dc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2509,7 +2509,7 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
 
 08001318 <main>:
 
-void UART2_Init(void);
+void UART1_Init(void);
 
 
 int main(void)
@@ -2518,12 +2518,11 @@ int main(void)
  800131a:	af00      	add	r7, sp, #0
 	HAL_Init();
  800131c:	f7ff f8e2 	bl	80004e4 <HAL_Init>
-	UART2_Init();
- 8001320:	f000 f816 	bl	8001350 <UART2_Init>
-
+	UART1_Init();
+ 8001320:	f000 f816 	bl	8001350 <UART1_Init>
 	while(1)
 	{
-		HAL_UART_Transmit(&Uart2,(uint8_t*)&Datatosend,20,100);
+		HAL_UART_Transmit(&Uart1, (const uint8_t *)&Datatosend,20, 100);
  8001324:	2364      	movs	r3, #100	; 0x64
  8001326:	2214      	movs	r2, #20
  8001328:	4904      	ldr	r1, [pc, #16]	; (800133c <main+0x24>)
@@ -2532,15 +2531,15 @@ int main(void)
 		HAL_Delay(1000);
  8001330:	f44f 707a 	mov.w	r0, #1000	; 0x3e8
  8001334:	f7ff f94a 	bl	80005cc <HAL_Delay>
-		HAL_UART_Transmit(&Uart2,(uint8_t*)&Datatosend,20,100);
+		HAL_UART_Transmit(&Uart1, (const uint8_t *)&Datatosend,20, 100);
  8001338:	e7f4      	b.n	8001324 <main+0xc>
  800133a:	bf00      	nop
  800133c:	20000008 	.word	0x20000008
  8001340:	20000040 	.word	0x20000040
 
 08001344 <SysTick_Handler>:
-    /* Loop forever */
-	for(;;);
+//    /* Loop forever */
+//	for(;;);
 }
 
 void SysTick_Handler(void)
@@ -2553,123 +2552,117 @@ void SysTick_Handler(void)
  800134c:	bf00      	nop
  800134e:	bd80      	pop	{r7, pc}
 
-08001350 <UART2_Init>:
+08001350 <UART1_Init>:
 
-void UART2_Init(void)
+void UART1_Init(void)
 {
  8001350:	b580      	push	{r7, lr}
  8001352:	b088      	sub	sp, #32
  8001354:	af00      	add	r7, sp, #0
+	// Configure Clock for UART
 	__HAL_RCC_GPIOA_CLK_ENABLE();
  8001356:	2300      	movs	r3, #0
  8001358:	60bb      	str	r3, [r7, #8]
- 800135a:	4b25      	ldr	r3, [pc, #148]	; (80013f0 <UART2_Init+0xa0>)
+ 800135a:	4b25      	ldr	r3, [pc, #148]	; (80013f0 <UART1_Init+0xa0>)
  800135c:	6b1b      	ldr	r3, [r3, #48]	; 0x30
- 800135e:	4a24      	ldr	r2, [pc, #144]	; (80013f0 <UART2_Init+0xa0>)
+ 800135e:	4a24      	ldr	r2, [pc, #144]	; (80013f0 <UART1_Init+0xa0>)
  8001360:	f043 0301 	orr.w	r3, r3, #1
  8001364:	6313      	str	r3, [r2, #48]	; 0x30
- 8001366:	4b22      	ldr	r3, [pc, #136]	; (80013f0 <UART2_Init+0xa0>)
+ 8001366:	4b22      	ldr	r3, [pc, #136]	; (80013f0 <UART1_Init+0xa0>)
  8001368:	6b1b      	ldr	r3, [r3, #48]	; 0x30
  800136a:	f003 0301 	and.w	r3, r3, #1
  800136e:	60bb      	str	r3, [r7, #8]
  8001370:	68bb      	ldr	r3, [r7, #8]
 
-	// Configure Clock for UART
-//	GPIO init typedef
+	//GPIO init typedef
 	GPIO_InitTypeDef	GpioStruct;
-	__HAL_RCC_USART2_CLK_ENABLE();
+
+	__HAL_RCC_USART1_CLK_ENABLE();
  8001372:	2300      	movs	r3, #0
  8001374:	607b      	str	r3, [r7, #4]
- 8001376:	4b1e      	ldr	r3, [pc, #120]	; (80013f0 <UART2_Init+0xa0>)
- 8001378:	6c1b      	ldr	r3, [r3, #64]	; 0x40
- 800137a:	4a1d      	ldr	r2, [pc, #116]	; (80013f0 <UART2_Init+0xa0>)
- 800137c:	f443 3300 	orr.w	r3, r3, #131072	; 0x20000
- 8001380:	6413      	str	r3, [r2, #64]	; 0x40
- 8001382:	4b1b      	ldr	r3, [pc, #108]	; (80013f0 <UART2_Init+0xa0>)
- 8001384:	6c1b      	ldr	r3, [r3, #64]	; 0x40
- 8001386:	f403 3300 	and.w	r3, r3, #131072	; 0x20000
+ 8001376:	4b1e      	ldr	r3, [pc, #120]	; (80013f0 <UART1_Init+0xa0>)
+ 8001378:	6c5b      	ldr	r3, [r3, #68]	; 0x44
+ 800137a:	4a1d      	ldr	r2, [pc, #116]	; (80013f0 <UART1_Init+0xa0>)
+ 800137c:	f043 0310 	orr.w	r3, r3, #16
+ 8001380:	6453      	str	r3, [r2, #68]	; 0x44
+ 8001382:	4b1b      	ldr	r3, [pc, #108]	; (80013f0 <UART1_Init+0xa0>)
+ 8001384:	6c5b      	ldr	r3, [r3, #68]	; 0x44
+ 8001386:	f003 0310 	and.w	r3, r3, #16
  800138a:	607b      	str	r3, [r7, #4]
  800138c:	687b      	ldr	r3, [r7, #4]
-//	HAL_UART_MspInit(&Uart2);
-	/**********************/
-
 	// GPIO Configuration
 
-	GpioStruct.Pin			=	GPIO_PIN_2 | GPIO_PIN_3;
- 800138e:	230c      	movs	r3, #12
- 8001390:	60fb      	str	r3, [r7, #12]
+	GpioStruct.Pin			=	GPIO_PIN_9 | GPIO_PIN_10;
+ 800138e:	f44f 63c0 	mov.w	r3, #1536	; 0x600
+ 8001392:	60fb      	str	r3, [r7, #12]
 	GpioStruct.Mode 		=	GPIO_MODE_AF_PP;
- 8001392:	2302      	movs	r3, #2
- 8001394:	613b      	str	r3, [r7, #16]
-	GpioStruct.Alternate	=	GPIO_AF7_USART2;
- 8001396:	2307      	movs	r3, #7
- 8001398:	61fb      	str	r3, [r7, #28]
+ 8001394:	2302      	movs	r3, #2
+ 8001396:	613b      	str	r3, [r7, #16]
+	GpioStruct.Alternate	=	GPIO_AF7_USART1;
+ 8001398:	2307      	movs	r3, #7
+ 800139a:	61fb      	str	r3, [r7, #28]
 	GpioStruct.Pull			= 	GPIO_NOPULL;
- 800139a:	2300      	movs	r3, #0
- 800139c:	617b      	str	r3, [r7, #20]
+ 800139c:	2300      	movs	r3, #0
+ 800139e:	617b      	str	r3, [r7, #20]
 	GpioStruct.Speed		= 	GPIO_SPEED_FREQ_VERY_HIGH;
- 800139e:	2303      	movs	r3, #3
- 80013a0:	61bb      	str	r3, [r7, #24]
-//
+ 80013a0:	2303      	movs	r3, #3
+ 80013a2:	61bb      	str	r3, [r7, #24]
+
 	HAL_GPIO_Init(GPIOA,&GpioStruct);
- 80013a2:	f107 030c 	add.w	r3, r7, #12
- 80013a6:	4619      	mov	r1, r3
- 80013a8:	4812      	ldr	r0, [pc, #72]	; (80013f4 <UART2_Init+0xa4>)
- 80013aa:	f7ff fa17 	bl	80007dc <HAL_GPIO_Init>
+ 80013a4:	f107 030c 	add.w	r3, r7, #12
+ 80013a8:	4619      	mov	r1, r3
+ 80013aa:	4812      	ldr	r0, [pc, #72]	; (80013f4 <UART1_Init+0xa4>)
+ 80013ac:	f7ff fa16 	bl	80007dc <HAL_GPIO_Init>
 
-	// USART2 Configuration
-
-
-	Uart2.Instance				=	USART2; // USART2 Base Address is given
- 80013ae:	4b12      	ldr	r3, [pc, #72]	; (80013f8 <UART2_Init+0xa8>)
- 80013b0:	4a12      	ldr	r2, [pc, #72]	; (80013fc <UART2_Init+0xac>)
- 80013b2:	601a      	str	r2, [r3, #0]
+	// USART1 Configuration
+	Uart1.Instance				=	USART1; // USART1 Base Address is given
+ 80013b0:	4b11      	ldr	r3, [pc, #68]	; (80013f8 <UART1_Init+0xa8>)
+ 80013b2:	4a12      	ldr	r2, [pc, #72]	; (80013fc <UART1_Init+0xac>)
+ 80013b4:	601a      	str	r2, [r3, #0]
 	// Don't get confused between UART and USART there is just a bit difference
 	// We are configuring USART2 as UART
+	Uart1.Init.BaudRate			=	115200;
+ 80013b6:	4b10      	ldr	r3, [pc, #64]	; (80013f8 <UART1_Init+0xa8>)
+ 80013b8:	f44f 32e1 	mov.w	r2, #115200	; 0x1c200
+ 80013bc:	605a      	str	r2, [r3, #4]
+	Uart1.Init.WordLength		=	UART_WORDLENGTH_8B;
+ 80013be:	4b0e      	ldr	r3, [pc, #56]	; (80013f8 <UART1_Init+0xa8>)
+ 80013c0:	2200      	movs	r2, #0
+ 80013c2:	609a      	str	r2, [r3, #8]
+	Uart1.Init.StopBits			=	UART_STOPBITS_1;
+ 80013c4:	4b0c      	ldr	r3, [pc, #48]	; (80013f8 <UART1_Init+0xa8>)
+ 80013c6:	2200      	movs	r2, #0
+ 80013c8:	60da      	str	r2, [r3, #12]
+	Uart1.Init.Mode				=	UART_MODE_TX;
+ 80013ca:	4b0b      	ldr	r3, [pc, #44]	; (80013f8 <UART1_Init+0xa8>)
+ 80013cc:	2208      	movs	r2, #8
+ 80013ce:	615a      	str	r2, [r3, #20]
+	Uart1.Init.Parity			=	UART_PARITY_NONE;
+ 80013d0:	4b09      	ldr	r3, [pc, #36]	; (80013f8 <UART1_Init+0xa8>)
+ 80013d2:	2200      	movs	r2, #0
+ 80013d4:	611a      	str	r2, [r3, #16]
+	Uart1.Init.HwFlowCtl		=	UART_HWCONTROL_NONE;
+ 80013d6:	4b08      	ldr	r3, [pc, #32]	; (80013f8 <UART1_Init+0xa8>)
+ 80013d8:	2200      	movs	r2, #0
+ 80013da:	619a      	str	r2, [r3, #24]
+	Uart1.Init.OverSampling		=	UART_OVERSAMPLING_16;
+ 80013dc:	4b06      	ldr	r3, [pc, #24]	; (80013f8 <UART1_Init+0xa8>)
+ 80013de:	2200      	movs	r2, #0
+ 80013e0:	61da      	str	r2, [r3, #28]
 
-	Uart2.Init.BaudRate			=	115200;
- 80013b4:	4b10      	ldr	r3, [pc, #64]	; (80013f8 <UART2_Init+0xa8>)
- 80013b6:	f44f 32e1 	mov.w	r2, #115200	; 0x1c200
- 80013ba:	605a      	str	r2, [r3, #4]
-	Uart2.Init.WordLength		=	UART_WORDLENGTH_8B;
- 80013bc:	4b0e      	ldr	r3, [pc, #56]	; (80013f8 <UART2_Init+0xa8>)
- 80013be:	2200      	movs	r2, #0
- 80013c0:	609a      	str	r2, [r3, #8]
-	Uart2.Init.StopBits			=	UART_STOPBITS_1;
- 80013c2:	4b0d      	ldr	r3, [pc, #52]	; (80013f8 <UART2_Init+0xa8>)
- 80013c4:	2200      	movs	r2, #0
- 80013c6:	60da      	str	r2, [r3, #12]
-	Uart2.Init.Mode				=	UART_MODE_TX;
- 80013c8:	4b0b      	ldr	r3, [pc, #44]	; (80013f8 <UART2_Init+0xa8>)
- 80013ca:	2208      	movs	r2, #8
- 80013cc:	615a      	str	r2, [r3, #20]
-	Uart2.Init.Parity			=	UART_PARITY_NONE;
- 80013ce:	4b0a      	ldr	r3, [pc, #40]	; (80013f8 <UART2_Init+0xa8>)
- 80013d0:	2200      	movs	r2, #0
- 80013d2:	611a      	str	r2, [r3, #16]
-	Uart2.Init.HwFlowCtl		=	UART_HWCONTROL_NONE;
- 80013d4:	4b08      	ldr	r3, [pc, #32]	; (80013f8 <UART2_Init+0xa8>)
- 80013d6:	2200      	movs	r2, #0
- 80013d8:	619a      	str	r2, [r3, #24]
-	Uart2.Init.OverSampling		=	UART_OVERSAMPLING_16;
- 80013da:	4b07      	ldr	r3, [pc, #28]	; (80013f8 <UART2_Init+0xa8>)
- 80013dc:	2200      	movs	r2, #0
- 80013de:	61da      	str	r2, [r3, #28]
-
-	HAL_UART_Init(&Uart2);
- 80013e0:	4805      	ldr	r0, [pc, #20]	; (80013f8 <UART2_Init+0xa8>)
- 80013e2:	f7ff fbc7 	bl	8000b74 <HAL_UART_Init>
+	HAL_UART_Init(&Uart1);
+ 80013e2:	4805      	ldr	r0, [pc, #20]	; (80013f8 <UART1_Init+0xa8>)
+ 80013e4:	f7ff fbc6 	bl	8000b74 <HAL_UART_Init>
 
 }
- 80013e6:	bf00      	nop
- 80013e8:	3720      	adds	r7, #32
- 80013ea:	46bd      	mov	sp, r7
- 80013ec:	bd80      	pop	{r7, pc}
- 80013ee:	bf00      	nop
+ 80013e8:	bf00      	nop
+ 80013ea:	3720      	adds	r7, #32
+ 80013ec:	46bd      	mov	sp, r7
+ 80013ee:	bd80      	pop	{r7, pc}
  80013f0:	40023800 	.word	0x40023800
  80013f4:	40020000 	.word	0x40020000
  80013f8:	20000040 	.word	0x20000040
- 80013fc:	40004400 	.word	0x40004400
+ 80013fc:	40011000 	.word	0x40011000
 
 08001400 <Reset_Handler>:
 
